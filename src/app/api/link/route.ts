@@ -29,12 +29,55 @@ export async function POST(req: NextRequest) {
       },
     });
 
-
     // joint the hash to the url
     const finalLink = `http://localhost:3000/${hash}`;
 
     return NextResponse.json(
-      { message: "success",finalLink },
+      { message: "success", finalLink },
+      { status: 200, statusText: "OK" }
+    );
+  } catch (error: any) {
+    console.error("Error al procesar la solicitud:", error);
+    return NextResponse.json(
+      { message: "Error al procesar la solicitud", error: error.message },
+      { status: 500 }
+    );
+  }
+}
+
+//get link from api
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const hash = searchParams.get("hash");
+    const type = searchParams.get("type");
+
+    if (type == "getLink" && hash) {
+      console.log(hash);
+
+      //check if hash exist in db
+      const exist = await db.links.findUnique({
+        where: {
+          hash: hash,
+        },
+      });
+      if(!exist){
+        return NextResponse.json(
+          { message: "Hash not found" },
+          { status: 404, statusText: "Not Found" }
+        );
+      }
+      // console.log(exist.URL);
+
+      return NextResponse.json(
+        { message: "success", url: exist.URL},
+        { status: 200, statusText: "OK" }
+      );
+
+    }
+
+    return NextResponse.json(
+      { message: "success" },
       { status: 200, statusText: "OK" }
     );
   } catch (error: any) {
