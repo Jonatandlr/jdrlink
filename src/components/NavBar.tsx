@@ -24,14 +24,13 @@ const NavBar = async () => {
           </>
         ) : (
           <>
-            <Button func="signIn" button="ghost">
-              Login
+            <Button func="signIn" button="principal">
+              Iniciar Sesión
             </Button>
-            <Button button="principal">Register</Button>
+            {/* <Button button="principal">Register</Button> */}
           </>
         )}
-        {/* <Button button="ghost">Login</Button>
-        <Button button="principal">Register</Button> */}
+
       </div>
     </div>
   );

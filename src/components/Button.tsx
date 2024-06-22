@@ -4,11 +4,15 @@ import { signIn, signOut, useSession } from "next-auth/react";
 interface ButtonProps {
   children: React.ReactNode;
   button?: "principal" | "red" | "ghost" | "red2.0";
-  func?:"signIn" | "signOut";
+  func?:"signIn" | "signOut" | "signInGoogle";
+  click?: () => void;
+  className?: string;
 }
 
-const Button = ({ children, button, func }: ButtonProps) => {
+const Button = ({ children, button, func,click,className}: ButtonProps) => {
   return (
+
+    
     <button
       onClick={()=>{
         if(func === "signIn"){
@@ -16,7 +20,13 @@ const Button = ({ children, button, func }: ButtonProps) => {
         }
         if(func === "signOut"){
           signOut();
+        }if(click){
+          click();
         }
+        if(func ==="signInGoogle"){
+          signIn("google",{callbackUrl:"/authCallback"})
+        }
+        
       }}
       className={clsx(
         "font-semibold rounded-xl px-4 py-2 transition-all duration-300  text-base",
@@ -26,7 +36,7 @@ const Button = ({ children, button, func }: ButtonProps) => {
           "bg-red-600 text-white hover:bg-red-500": button === "red",
           "hover:bg-red-600 hover:text-white text-red-600 border ":
             button === "red2.0",
-        }
+        },className
       )}
     >
       {children}

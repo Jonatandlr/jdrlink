@@ -1,12 +1,16 @@
 "use client";
 import { useState } from "react";
 import Button from "./Button";
+import { useSession } from "next-auth/react";
 
 const FormToURL = () => {
   const [formData, setFormData] = useState({
     url: "",
     hashToUrl: "",
   });
+
+  const [crearLink, setCrearLink] = useState(false);
+  const { data } = useSession();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
@@ -17,7 +21,12 @@ const FormToURL = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log(formData);
+
+    if (!data) {
+      setCrearLink(true);
+    }
+
+    
   };
 
   return (
@@ -45,9 +54,30 @@ const FormToURL = () => {
             maxLength={10}
             required
           />
-          <Button  button="red">Cortar &rarr;</Button>
+          <Button button="red" >Cortar &rarr;</Button>
         </div>
       </form>
+      {crearLink ? (
+        <div className="fixed top-0 left-0 h-screen w-screen flex justify-center items-center">
+          <div 
+          onClick={()=>{setCrearLink(false)}}
+          
+          className="absolute top-0 left-0 h-screen w-screen bg-black opacity-80"></div>
+
+          <div className="relative bg-white z-10 py-7 md:px-8 px-4 rounded-2xl my-2">
+            <h3 className="md:text-lg text-base text-center pb-4 font-semibold">
+              Necesitas iniciar sesión para crear un link
+            </h3>
+            <div className="flex justify-end">
+              <Button click={()=>{setCrearLink(false)}} button="principal">cerrar</Button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        <div></div>
+      )}
+
+
     </div>
   );
 };
