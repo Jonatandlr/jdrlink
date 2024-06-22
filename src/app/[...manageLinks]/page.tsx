@@ -18,10 +18,10 @@ export default function Page() {
     if (data.message === "Hash not found") {
       router.push("/");
     } 
-    // else {
-    //   //    console.log(data.url)
-    //   router.push(data.url);
-    // }
+    else {
+      //    console.log(data.url)
+      router.push(data.url);
+    }
     // console.log(data);
   };
 

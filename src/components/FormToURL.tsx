@@ -46,9 +46,16 @@ const FormToURL = () => {
       body: JSON.stringify(formData),
     });
     const data = await response.json();
+
+    if (data.message === "Hash already exist") {
+      setFinalLink(data.message);
+      setLoading(false);
+      return;
+    }
+
     setFinalLink(data.finalLink);
     setLoading(false);
-    console.log(data.finalLink);
+    // console.log(data.finalLink);
   };
 
   return (
@@ -119,7 +126,7 @@ const FormToURL = () => {
         </div>
       ) : (
         <div>
-          {finalLink ? (
+          {finalLink && finalLink != "Hash already exist" ? (
             <div className="flex flex-col  pt-8">
               <div className="relative z-30 flex items-center rounded-[15px] border-2 border-black/opacity-50 px-4 py-2 md:w-[550px] w-full focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent bg-white">
                 <input
@@ -165,7 +172,17 @@ const FormToURL = () => {
               </h3>
             </div>
           ) : (
-            <div></div>
+            <div>
+              {finalLink && finalLink == "Hash already exist" ? (
+                <h3 className="md:w-[550px] w-full text-xl font-semibold  text-rose-600 text-center">
+                  Hash ya existe!
+                </h3>
+              ) : (
+                <h3 className="md:w-[550px] w-full text-xl font-semibold  text-rose-600 text-center pt-5">
+                  Crea tu link!
+                </h3>
+              )}
+            </div>
           )}
         </div>
       )}
