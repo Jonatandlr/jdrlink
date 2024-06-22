@@ -64,12 +64,12 @@ const FormToURL = () => {
           value={formData.url}
           required
         />
-        <div className="flex gap-5">
+        <div className="flex gap-5 md:flex-row flex-col">
           <input
             id="hashToUrl"
             name="hashToUrl"
             type="text"
-            className=" rounded-[15px] border-2 border-black/opacity-50 px-4 py-2 w-96 focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
+            className=" rounded-[15px] border-2 border-black/opacity-50 px-4 py-2 md:w-96 w-full focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
             placeholder="Hash a usar para el enlace (max 10)"
             onChange={handleChange}
             value={formData.hashToUrl}
@@ -121,9 +121,9 @@ const FormToURL = () => {
         <div>
           {finalLink ? (
             <div className="flex flex-col  pt-8">
-              <div className="relative flex items-center rounded-[15px] border-2 border-black/opacity-50 px-4 py-2 md:w-[550px] w-full focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent">
+              <div className="relative z-30 flex items-center rounded-[15px] border-2 border-black/opacity-50 px-4 py-2 md:w-[550px] w-full focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent bg-white">
                 <input
-                  className="flex-1 bg-transparent outline-none"
+                  className="flex-1  outline-none"
                   value={finalLink}
                   readOnly
                 />

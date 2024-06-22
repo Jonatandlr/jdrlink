@@ -3,10 +3,10 @@ import Image from "next/image";
 import FormToURL from "@/components/FormToURL";
 export default function Home() {
   return (
-    <main>
+    <main className="">
       <NavBar />
 
-      <div className="pt-16 bg-[url('/homeopacity.png')] bg-center bg-no-repeat md:bg-none">
+      <div className="pt-16 bg-[url('/homeopacity.png')] bg-center bg-no-repeat md:bg-none md:pb-0 pb-36">
         <div className="">
           <h2 className="font-bold  text-3xl md:text-6xl text-center md:text-left ">
             Simplifica tus <span className=" text-red-600">enlaces</span>,

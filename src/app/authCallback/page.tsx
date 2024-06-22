@@ -41,7 +41,7 @@ export default function Page() {
       <div className="flex flex-col">
         {/* Icono de autenticación */}
         <div className="flex justify-center items-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900" />
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-rose-600" />
         </div>
         <h3 className="text-center text-2xl font-bold mt-10">
           Autenticando...
