@@ -7,6 +7,7 @@ import { OPTIONS } from "../auth/[...nextauth]/route";
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
+    // console.log(data)
     const session = await getServerSession({ req, ...OPTIONS });
     // console.log(session);
     const hash = await hashToUrl(data.hashToUrl);
@@ -53,9 +54,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const hash = searchParams.get("hash");
     const type = searchParams.get("type");
-
     if (type == "getLink" && hash) {
-      // console.log(hash);
       //check if hash exist in db
       const exist = await db.links.findUnique({
         where: {
@@ -64,14 +63,12 @@ export async function GET(req: NextRequest) {
       });
       if (!exist) {
         return NextResponse.json(
-          { message: "Hash not found" },
+          { message: "Hash not found",ok:false },
           { status: 404, statusText: "Not Found" }
         );
       }
-      // console.log(exist.URL);
-
       return NextResponse.json(
-        { message: "success", url: exist.URL },
+        { message: "success", url: exist.URL, ok:true},
         { status: 200, statusText: "OK" }
       );
     }
@@ -82,8 +79,8 @@ export async function GET(req: NextRequest) {
 
       if (!session?.user?.email) {
         return NextResponse.json(
-          { message: "Not Found user" },
-          { status: 404, statusText: "Not Found user" }
+          { message: "Not Found user", ok: false},
+          { status: 404, statusText: "Not Found user"}
         );
       }
 
@@ -96,7 +93,7 @@ export async function GET(req: NextRequest) {
       });
 
       return NextResponse.json(
-        { message: "success", links },
+        { message: "success", links ,ok:true},
         { status: 200, statusText: "OK" }
       );
     }

@@ -16,7 +16,7 @@ export default function MisLinksContainer() {
     const fetchLinks = async () => {
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_URL}/link?type=getLinks`,
+          `${process.env.NEXT_PUBLIC_URL as string}/api/link?type=getLinks`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -29,7 +29,7 @@ export default function MisLinksContainer() {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        console.log(data.links);
+        // console.log(data.links);
         setLinks(data.links);
         setLoading(false);
       } catch (error: any) {
@@ -49,9 +49,7 @@ export default function MisLinksContainer() {
           <div className="flex justify-center items-center">
             <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-rose-600" />
           </div>
-          <h3 className="text-center text-2xl font-bold mt-10">
-            cargando...
-          </h3>
+          <h3 className="text-center text-2xl font-bold mt-10">cargando...</h3>
         </div>
       </div>
     );
@@ -64,11 +62,9 @@ export default function MisLinksContainer() {
           <MisLinkCard
             id={link.id}
             title={link.hash}
-            link={`${process.env.NEXT_PUBLIC_URL}/${link.hash}`}
+            link={`${process.env.NEXT_PUBLIC_URL as string}/${link.hash}`}
           />
         </div>
-
-        // <MisLinkCard key={link.id} link={link} />
       ))}
     </div>
   );
