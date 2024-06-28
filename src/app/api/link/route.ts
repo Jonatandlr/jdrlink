@@ -1,12 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/libs/prisma";
 import { getServerSession } from "next-auth";
+import { OPTIONS } from "../auth/[...nextauth]/route";
 
 //post link to api
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
-    const session = await getServerSession();
+    const session = await getServerSession({ req, ...OPTIONS });
+    // console.log(session);
     const hash = await hashToUrl(data.hashToUrl);
 
     if (hash === "Hash already exist") {
@@ -33,7 +35,7 @@ export async function POST(req: NextRequest) {
     const finalLink = `http://localhost:3000/${hash}`;
 
     return NextResponse.json(
-      { message: "success", finalLink },
+      { message: "perro", finalLink },
       { status: 200, statusText: "OK" }
     );
   } catch (error: any) {
@@ -53,15 +55,14 @@ export async function GET(req: NextRequest) {
     const type = searchParams.get("type");
 
     if (type == "getLink" && hash) {
-      console.log(hash);
-
+      // console.log(hash);
       //check if hash exist in db
       const exist = await db.links.findUnique({
         where: {
           hash: hash,
         },
       });
-      if(!exist){
+      if (!exist) {
         return NextResponse.json(
           { message: "Hash not found" },
           { status: 404, statusText: "Not Found" }
@@ -70,14 +71,38 @@ export async function GET(req: NextRequest) {
       // console.log(exist.URL);
 
       return NextResponse.json(
-        { message: "success", url: exist.URL},
+        { message: "success", url: exist.URL },
         { status: 200, statusText: "OK" }
       );
+    }
 
+    if (type == "getLinks") {
+      const session = await getServerSession({ req, ...OPTIONS });
+      // console.log("GET Session:", session);
+
+      if (!session?.user?.email) {
+        return NextResponse.json(
+          { message: "Not Found user" },
+          { status: 404, statusText: "Not Found user" }
+        );
+      }
+
+      const links = await db.links.findMany({
+        where: {
+          author: {
+            email: session?.user?.email,
+          },
+        },
+      });
+
+      return NextResponse.json(
+        { message: "success", links },
+        { status: 200, statusText: "OK" }
+      );
     }
 
     return NextResponse.json(
-      { message: "success" },
+      { message: "perro" },
       { status: 200, statusText: "OK" }
     );
   } catch (error: any) {

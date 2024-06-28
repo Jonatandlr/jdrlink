@@ -7,13 +7,19 @@ const NavBar = async () => {
   // console.log(session);
   return (
     <div className="pt-10 flex justify-between  items-end">
+      <a href="/">
+
       <h1 className="text-black font-bold text-2xl md:text-4xl">
         JDR<span className="text-rose-600">LINK</span>
       </h1>
+      </a>
 
-      <div className="flex gap-10 ">
+      <div className="flex  gap-4 ">
         {session ? (
           <>
+            <Button button="red2.0">
+              <a href="/misLinks">Mis Links</a>
+            </Button>
             <Button func="signOut" button="ghost">
               Logout
             </Button>
