@@ -32,10 +32,10 @@ export async function POST(req: NextRequest) {
     });
 
     // joint the hash to the url
-    const finalLink = `http://localhost:3000/${hash}`;
+    const finalLink = `${process.env.NEXT_PUBLIC_URL}/${hash}`;
 
     return NextResponse.json(
-      { message: "perro", finalLink },
+      { message: "success", finalLink },
       { status: 200, statusText: "OK" }
     );
   } catch (error: any) {

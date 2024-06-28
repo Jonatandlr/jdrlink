@@ -14,7 +14,7 @@ export default function Page() {
     } else if (status === "authenticated") {
       const auteticationDB = async () => {
         try {
-          const response = await fetch("http://localhost:3000/api/authdb", {
+          const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/authdb`, {
             method: "POST", // Asegúrate de que estás utilizando el método correcto
             headers: {
               "Content-Type": "application/json",

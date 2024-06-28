@@ -10,7 +10,7 @@ export default function Page() {
 
   const link = async () => {
     const response = await fetch(
-      `http://localhost:3000/api/link?type=getLink&hash=${segments[0]}`,
+      `${process.env.NEXT_PUBLIC_URL}/api/link?type=getLink&hash=${segments[0]}`,
       { method: "GET" }
     );
     const data = await response.json();

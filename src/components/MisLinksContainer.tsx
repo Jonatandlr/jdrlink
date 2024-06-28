@@ -16,7 +16,7 @@ export default function MisLinksContainer() {
     const fetchLinks = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3000/api/link?type=getLinks`,
+          `${process.env.NEXT_PUBLIC_URL}/link?type=getLinks`,
           {
             headers: {
               "Content-Type": "application/json",
@@ -64,7 +64,7 @@ export default function MisLinksContainer() {
           <MisLinkCard
             id={link.id}
             title={link.hash}
-            link={`http://localhost:3000/${link.hash}`}
+            link={`${process.env.NEXT_PUBLIC_URL}/${link.hash}`}
           />
         </div>
 
