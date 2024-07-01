@@ -78,10 +78,10 @@ const FormToURL = () => {
             name="hashToUrl"
             type="text"
             className=" rounded-[15px] border-2 border-black/opacity-50 px-4 py-2 md:w-96 w-full focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
-            placeholder="Hash a usar para el enlace (max 10)"
+            placeholder="Hash a usar para el enlace (max 15)"
             onChange={handleChange}
             value={formData.hashToUrl}
-            maxLength={10}
+            maxLength={15}
             required
           />
           <Button button="red">Cortar &rarr;</Button>
