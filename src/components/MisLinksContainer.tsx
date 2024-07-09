@@ -56,7 +56,9 @@ export default function MisLinksContainer() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 py-8">
+    <>
+    {links.length!=0 ?<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8 py-8">
+      
       {links.map((link: Link, index: number) => (
         <div key={index}>
           <MisLinkCard
@@ -66,6 +68,11 @@ export default function MisLinksContainer() {
           />
         </div>
       ))}
-    </div>
+    </div>:<div className="w-full mt-40 flex justify-center text-black text-3xl opacity-50">
+    Aun no tienes ningún link creado
+      </div>}
+    </>
+    
   );
 }
+{/* <div class="opacity-50 text-black text-[40px] font-bold font-['Inter']">Aun no tienes ningún link creado</div> */}
