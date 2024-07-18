@@ -7,15 +7,17 @@ interface MisLinkCardProps {
   id: string;
 }
 
-export default function MisLinkCard({ title, link,id }: MisLinkCardProps) {
+export default function MisLinkCard({ title, link, id }: MisLinkCardProps) {
   return (
     <div
-    key={id}
-    
-    className="bg-white rounded-xl p-4  flex border border-black shadow-[5px_8px_5px_-2px] shadow-black/50 relative">
+      key={id}
+      className="bg-white rounded-xl p-4  flex border border-black shadow-[5px_8px_5px_-2px] shadow-black/50 relative"
+    >
       <div>{linkIcon()}</div>
       <div>
-        <h2 className="text-2xl font-semibold">{title}</h2>
+        <a href={`/misLinks/${id}`}>
+          <h2 className="text-2xl font-semibold hover:text-rose-600 transition duration-300">{title}</h2>
+        </a>
         <a
           className="text-gray-500 transition duration-300 hover:underline hover:text-rose-600 pt-5 break-all  block"
           href={link}

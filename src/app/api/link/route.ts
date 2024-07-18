@@ -54,8 +54,9 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
     const hash = searchParams.get("hash");
     const type = searchParams.get("type");
-    if (type == "getLink" && hash) {
+    if (type == "getLink" && hash && hash.length <= 15) {
       //check if hash exist in db
+     
       const exist = await db.links.findUnique({
         where: {
           hash: hash,
@@ -69,6 +70,27 @@ export async function GET(req: NextRequest) {
       }
       return NextResponse.json(
         { message: "success", url: exist.URL, ok:true},
+        { status: 200, statusText: "OK" }
+      );
+    }
+
+    if (type == "getLink" && hash && hash.length > 15) {
+      //check if hash exist in db
+      const exist = await db.links.findUnique({
+        where: {
+          id: hash,
+        },
+      });
+      if (!exist) {
+        return NextResponse.json(
+          { message: "Hash not found",ok:false },
+          { status: 404, statusText: "Not Found" }
+        );
+      }
+
+      const {authorId, ...rest} = exist
+      return NextResponse.json(
+        { message: "success", url: rest, ok:true},
         { status: 200, statusText: "OK" }
       );
     }
