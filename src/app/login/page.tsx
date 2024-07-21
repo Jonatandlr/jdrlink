@@ -17,7 +17,7 @@ export default function page() {
         </div>
       )
 }
-function ChromeIcon(props) {
+function ChromeIcon(props:any) {
     return (
       <svg
         {...props}

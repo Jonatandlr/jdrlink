@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/libs/prisma";
 import { getServerSession } from "next-auth";
-import {authOptions} from "@/app/api/auth/[...nextauth]/route"
+// import {authOptions} from "@/app/api/auth/[...nextauth]/route"
 
 //post link to api
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
     // console.log(data)
-    const session = await getServerSession({ req, ...authOptions });
-    // console.log(session);
+    const session = await getServerSession();
+    console.log(session);
     const hash = await hashToUrl(data.hashToUrl);
 
     if (hash === "Hash already exist") {
@@ -96,7 +96,7 @@ export async function GET(req: NextRequest) {
     }
 
     if (type == "getLinks") {
-      const session = await getServerSession({ req, ...authOptions });
+      const session = await getServerSession();
       // console.log("GET Session:", session);
 
       if (!session?.user?.email) {
