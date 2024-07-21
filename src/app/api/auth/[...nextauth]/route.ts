@@ -1,22 +1,20 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 
-
-
-export const OPTIONS ={
+// Define tus opciones de autenticación
+const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-    })
+    }),
   ],
   pages: {
     signIn: '/login', // Aquí indicas la ruta de tu página personalizada de inicio de sesión
   },
-} 
+};
 
+// Configura el handler de NextAuth con las opciones
+const handler = NextAuth(authOptions);
 
-const handler = NextAuth(OPTIONS);
-
-export { handler as GET, handler as POST };
-// export default NextAuth(options);
+export { handler as GET, handler as POST, authOptions };
