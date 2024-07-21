@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/libs/prisma";
 import { getServerSession } from "next-auth";
-import { OPTIONS } from "../auth/[...nextauth]/route";
+// import {authOptions} from "@/app/api/auth/[...nextauth]/route"
 
 //post link to api
 export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
     // console.log(data)
-    const session = await getServerSession({ req, ...OPTIONS });
-    // console.log(session);
+    const session = await getServerSession();
+    console.log(session);
     const hash = await hashToUrl(data.hashToUrl);
 
     if (hash === "Hash already exist") {
@@ -96,7 +96,7 @@ export async function GET(req: NextRequest) {
     }
 
     if (type == "getLinks") {
-      const session = await getServerSession({ req, ...OPTIONS });
+      const session = await getServerSession();
       // console.log("GET Session:", session);
 
       if (!session?.user?.email) {
@@ -121,7 +121,7 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json(
-      { message: "perro" },
+      { message: "success" },
       { status: 200, statusText: "OK" }
     );
   } catch (error: any) {
@@ -149,4 +149,48 @@ async function hashToUrl(hash: string) {
     return "Hash already exist";
   }
   return hash;
+}
+
+
+export async function DELETE(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+    if (!id) {
+      return NextResponse.json(
+        { message: "Hash not found" },
+        { status: 404, statusText: "Not Found" }
+      );
+    }
+    //check if hash exist in db
+    const exist = await db.links.findUnique({
+      where: {
+        id: id,
+      },
+    });
+    if (!exist) {
+      return NextResponse.json(
+        { message: "Hash not found" },
+        { status: 404, statusText: "Not Found" }
+      );
+    }
+
+    //delete link in db
+    await db.links.delete({
+      where: {
+        id: id,
+      },
+    });
+
+    return NextResponse.json(
+      { message: "success" },
+      { status: 200, statusText: "OK" }
+    );
+  } catch (error: any) {
+    console.error("Error al procesar la solicitud:", error);
+    return NextResponse.json(
+      { message: "Error al procesar la solicitud", error: error.message },
+      { status: 500 }
+    );
+  }
 }
