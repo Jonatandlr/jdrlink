@@ -6,23 +6,23 @@ generator client {
 }
 
 datasource db {
-  // provider = "postgresql"
-  // url      = env("DATABASE_URL")
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
-  id    String     @id @default(uuid())
+  id    String  @id @default(uuid())
   email String  @unique
   name  String?
   links Links[]
 }
+
 model Links {
-  id        String     @id @default(uuid())
+  id        String   @id @default(uuid())
   URL       String
-  hash      String    @unique
+  hash      String   @unique
   createdAt DateTime @default(now())
-  author    User    @relation(fields: [authorId], references: [id])
+  author    User     @relation(fields: [authorId], references: [id])
   authorId  String
 }
