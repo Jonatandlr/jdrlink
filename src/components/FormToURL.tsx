@@ -10,7 +10,7 @@ const FormToURL = () => {
     hashToUrl: "",
   });
   const [crearLink, setCrearLink] = useState(false);
-  const [loading, setLoading] = useState([false,""]);
+  const [loading, setLoading] = useState([false, ""]);
   const [finalLink, setFinalLink] = useState("");
   const [copied, setCopied] = useState(false);
 
@@ -38,7 +38,7 @@ const FormToURL = () => {
       return;
     }
 
-    setLoading([true,"Creando link..."]);
+    setLoading([true, "Creando link..."]);
     const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/link`, {
       method: "POST",
       headers: {
@@ -50,17 +50,18 @@ const FormToURL = () => {
 
     if (data.message === "Hash already exist") {
       setFinalLink(data.message);
-      setLoading([false,""]);
+      setLoading([false, ""]);
       return;
     }
 
     setFinalLink(data.finalLink);
-    setLoading([false,""]);
+    setLoading([false, ""]);
     // console.log(data.finalLink);
   };
 
   function isValidURL(string: string) {
-    const regex =/^(https?:\/\/)?([a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+)(:\d+)?(\/.*)?$/;
+    const regex =
+      /^(https?:\/\/)?([a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+)(:\d+)?(\/.*)?$/;
     return regex.test(string);
   }
 
@@ -73,7 +74,7 @@ const FormToURL = () => {
     if (formData.url === "" || !isValidURL(formData.url)) {
       return;
     }
-    setLoading([true,"Creando hash..."]);
+    setLoading([true, "Creando hash..."]);
     const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ai`, {
       method: "POST",
       headers: {
@@ -82,7 +83,7 @@ const FormToURL = () => {
       body: JSON.stringify({ url: formData.url }),
     });
     const data = await response.json();
-    setLoading([false,""]);
+    setLoading([false, ""]);
     setFormData({
       ...formData,
       hashToUrl: data.slug,
@@ -90,7 +91,7 @@ const FormToURL = () => {
   };
 
   return (
-    <div className=" pt-24 ">
+    <div className=" md:pt-24 md:*:pb-0 pt-10 pb-24 ">
       <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
         <input
           id="url"
@@ -102,7 +103,7 @@ const FormToURL = () => {
           value={formData.url}
           required
         />
-        <div className="flex gap-5 md:flex-row flex-col">
+        <div className="flex md:flex-row flex-col">
           <input
             id="hashToUrl"
             name="hashToUrl"
@@ -114,16 +115,18 @@ const FormToURL = () => {
             maxLength={15}
             required
           />
-          <button
-            onClick={AiButton}
-            type="button"
-            className="hover:bg-slate-100 rounded-[15px] transition-all duration-300"
-          >
-            <Image src="/AiButton.svg" width={50} height={50} alt="ai" />
-          </button>
-          <Button type="submit" button="red">
-            Cortar &rarr;
-          </Button>
+          <div className="flex justify-center gap-3 md:gap-0 pt-6 md:pt-0">
+            <button
+              onClick={AiButton}
+              type="button"
+              className="hover:bg-slate-100 rounded-[15px] transition-all duration-300 px-3"
+            >
+              <Image src="/AiButton.svg" width={50} height={50} alt="ai" />
+            </button>
+            <Button type="submit" button="red">
+              Cortar &rarr;
+            </Button>
+          </div>
         </div>
       </form>
 

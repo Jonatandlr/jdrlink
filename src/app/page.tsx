@@ -6,7 +6,7 @@ export default function Home() {
     <main className="relative">
       <NavBar />
 
-      <div className="pt-16 bg-[url('/homeopacity.png')] bg-no-repeat bg-cover md:bg-none md:pb-0 pb-36 ">
+      <div className="pt-16  md:pb-0 pb-36 ">
         <div className="">
           <h2 className="font-bold  text-3xl md:text-6xl text-center md:text-left md:w-1/2 w-full">
             Simplifica tus <span className=" text-red-600">enlaces</span>,

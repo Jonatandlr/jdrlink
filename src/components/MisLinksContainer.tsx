@@ -68,7 +68,7 @@ export default function MisLinksContainer() {
           />
         </div>
       ))}
-    </div>:<div className="w-full mt-40 flex justify-center text-black text-3xl opacity-50">
+    </div>:<div className="w-full mt-40 flex justify-center text-black md:text-3xl text-xl opacity-50">
     Aun no tienes ningún link creado
       </div>}
     </>

@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={inter.className+" bg-[url('/homeopacity.png')] bg-no-repeat bg-cover md:bg-none min-h-screen"}>
         <MaxWithWrapper>
           <Provedor>{children}</Provedor>
         </MaxWithWrapper>
