@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Button from "./Button";
 import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const FormToURL = () => {
   const [formData, setFormData] = useState({
@@ -9,7 +10,7 @@ const FormToURL = () => {
     hashToUrl: "",
   });
   const [crearLink, setCrearLink] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState([false,""]);
   const [finalLink, setFinalLink] = useState("");
   const [copied, setCopied] = useState(false);
 
@@ -37,7 +38,7 @@ const FormToURL = () => {
       return;
     }
 
-    setLoading(true);
+    setLoading([true,"Creando link..."]);
     const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/link`, {
       method: "POST",
       headers: {
@@ -49,15 +50,44 @@ const FormToURL = () => {
 
     if (data.message === "Hash already exist") {
       setFinalLink(data.message);
-      setLoading(false);
+      setLoading([false,""]);
       return;
     }
 
     setFinalLink(data.finalLink);
-    setLoading(false);
+    setLoading([false,""]);
     // console.log(data.finalLink);
   };
 
+  function isValidURL(string: string) {
+    const regex =/^(https?:\/\/)?([a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+)(:\d+)?(\/.*)?$/;
+    return regex.test(string);
+  }
+
+  const AiButton = async () => {
+    if (!sesion) {
+      setCrearLink(true);
+      return;
+    }
+    //verify if url exist
+    if (formData.url === "" || !isValidURL(formData.url)) {
+      return;
+    }
+    setLoading([true,"Creando hash..."]);
+    const response = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/ai`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ url: formData.url }),
+    });
+    const data = await response.json();
+    setLoading([false,""]);
+    setFormData({
+      ...formData,
+      hashToUrl: data.slug,
+    });
+  };
 
   return (
     <div className=" pt-24 ">
@@ -77,14 +107,23 @@ const FormToURL = () => {
             id="hashToUrl"
             name="hashToUrl"
             type="text"
-            className=" rounded-[15px] border-2 border-black/opacity-50 px-4 py-2 md:w-96 w-full focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
+            className="rounded-[15px] border-2 border-black/opacity-50 px-4 py-2 md:w-96 w-full focus:outline-none focus:ring-2 focus:ring-red-600 focus:border-transparent"
             placeholder="Hash a usar para el enlace (max 15)"
             onChange={handleChange}
             value={formData.hashToUrl}
             maxLength={15}
             required
           />
-          <Button button="red">Cortar &rarr;</Button>
+          <button
+            onClick={AiButton}
+            type="button"
+            className="hover:bg-slate-100 rounded-[15px] transition-all duration-300"
+          >
+            <Image src="/AiButton.svg" width={50} height={50} alt="ai" />
+          </button>
+          <Button type="submit" button="red">
+            Cortar &rarr;
+          </Button>
         </div>
       </form>
 
@@ -116,12 +155,12 @@ const FormToURL = () => {
       ) : (
         <div></div>
       )}
-      {loading ? (
+      {loading[0] ? (
         <div className="fixed top-0 left-0 h-screen w-screen flex justify-center items-center">
           <div className="absolute top-0 left-0 h-screen w-screen bg-black opacity-80"></div>
           <div className="relative bg-white z-10 py-7 md:px-8 px-4 rounded-2xl my-2">
             <h3 className="md:text-lg text-base text-center pb-4 font-semibold">
-              Creando link...
+              {loading[1]}
             </h3>
           </div>
         </div>

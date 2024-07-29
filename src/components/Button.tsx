@@ -7,13 +7,15 @@ interface ButtonProps {
   func?:"signIn" | "signOut" | "signInGoogle";
   click?: () => void;
   className?: string;
+  type?: "submit" | "button";
 }
 
-const Button = ({ children, button, func,click,className}: ButtonProps) => {
+const Button = ({ children, button, func,click,className,type}: ButtonProps) => {
   return (
 
     
     <button
+      type={!type?"button":type}
       onClick={()=>{
         if(func === "signIn"){
           signIn();

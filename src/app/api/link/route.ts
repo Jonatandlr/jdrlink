@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
     const data = await req.json();
     // console.log(data)
     const session = await getServerSession();
-    console.log(session);
+    // console.log(session);
     const hash = await hashToUrl(data.hashToUrl);
 
     if (hash === "Hash already exist") {
